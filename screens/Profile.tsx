@@ -4,147 +4,54 @@ import { View, Text, Image, ScrollView } from "react-native";
 import { Avatar, Button, Card, Modal, Portal } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import user from "./User.json";
+import * as DocumentPicker from "expo-document-picker";
+
 
 const Profile = () => {
   const [active, setActive] = useState("blog");
   const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(null);
+  const date = new Date().toDateString();
+
   const containerStyle = {
     backgroundColor: "white",
     padding: 20,
     margin: "auto",
     width: "80%",
-    // borderRadius:"10px"
+    borderRadius:"10px"
   };
 
-  const user = {
-    name: "Test Name",
-    photo:
-      "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg",
-    email: "test@gmail.com",
-    phone: "+919923456789",
-    likedBlogs: [
-      {
-        id: 3,
-        title: "The Rise of AI in Web Development",
-        description:
-          "Artificial Intelligence is revolutionizing web development. This blog delves into how AI tools are being integrated into web development processes, making it easier to build smarter, more efficient websites.",
-        likes: 1890,
-        image:
-          "https://vajiram-prod.s3.ap-south-1.amazonaws.com/What_is_Generative_AI_63beafff52.webp",
-        liked: true,
-      },
-      {
-        id: 4,
-        title: "Understanding Cloud Computing: A Developer's Perspective",
-        description:
-          "Cloud computing has become a cornerstone of modern technology. This blog provides an in-depth look at cloud computing from a developer's point of view, covering everything from cloud architecture to deployment strategies.",
-        likes: 2100,
-        image: "https://i.ytimg.com/vi/mxT233EdY5c/maxresdefault.jpg",
-        liked: false,
-      },
-      {
-        id: 5,
-        title: "Building Scalable Applications with Microservices",
-        description:
-          "Microservices architecture is key to building scalable and resilient applications. Learn the principles of microservices, best practices, and how to implement them effectively in your projects.",
-        likes: 1750,
-        image:
-          "https://cdn.prod.website-files.com/601be0f0f62d8b2e2a92b830/64245a9ba750a45185d81d0f_microservices_202303.webp",
-        liked: true,
-      },
-      {
-        id: 3,
-        title: "The Rise of AI in Web Development",
-        description:
-          "Artificial Intelligence is revolutionizing web development. This blog delves into how AI tools are being integrated into web development processes, making it easier to build smarter, more efficient websites.",
-        likes: 1890,
-        image:
-          "https://vajiram-prod.s3.ap-south-1.amazonaws.com/What_is_Generative_AI_63beafff52.webp",
-        liked: true,
-      },
-      {
-        id: 4,
-        title: "Understanding Cloud Computing: A Developer's Perspective",
-        description:
-          "Cloud computing has become a cornerstone of modern technology. This blog provides an in-depth look at cloud computing from a developer's point of view, covering everything from cloud architecture to deployment strategies.",
-        likes: 2100,
-        image: "https://i.ytimg.com/vi/mxT233EdY5c/maxresdefault.jpg",
-        liked: false,
-      },
-      {
-        id: 5,
-        title: "Building Scalable Applications with Microservices",
-        description:
-          "Microservices architecture is key to building scalable and resilient applications. Learn the principles of microservices, best practices, and how to implement them effectively in your projects.",
-        likes: 1750,
-        image:
-          "https://cdn.prod.website-files.com/601be0f0f62d8b2e2a92b830/64245a9ba750a45185d81d0f_microservices_202303.webp",
-        liked: true,
-      },
-      {
-        id: 3,
-        title: "The Rise of AI in Web Development",
-        description:
-          "Artificial Intelligence is revolutionizing web development. This blog delves into how AI tools are being integrated into web development processes, making it easier to build smarter, more efficient websites.",
-        likes: 1890,
-        image:
-          "https://vajiram-prod.s3.ap-south-1.amazonaws.com/What_is_Generative_AI_63beafff52.webp",
-        liked: true,
-      },
-      {
-        id: 4,
-        title: "Understanding Cloud Computing: A Developer's Perspective",
-        description:
-          "Cloud computing has become a cornerstone of modern technology. This blog provides an in-depth look at cloud computing from a developer's point of view, covering everything from cloud architecture to deployment strategies.",
-        likes: 2100,
-        image: "https://i.ytimg.com/vi/mxT233EdY5c/maxresdefault.jpg",
-        liked: false,
-      },
-      {
-        id: 5,
-        title: "Building Scalable Applications with Microservices",
-        description:
-          "Microservices architecture is key to building scalable and resilient applications. Learn the principles of microservices, best practices, and how to implement them effectively in your projects.",
-        likes: 1750,
-        image:
-          "https://cdn.prod.website-files.com/601be0f0f62d8b2e2a92b830/64245a9ba750a45185d81d0f_microservices_202303.webp",
-        liked: true,
-      },
-    ],
-    blogs: [
-      {
-        id: 1,
-        title: "Mastering JavaScript: The Ultimate Guide",
-        description:
-          "Dive deep into JavaScript with this comprehensive guide covering everything from the basics to advanced topics like closures, promises, and async/await. Perfect for both beginners and experienced developers looking to sharpen their skills.",
-        likes: 1520,
-        image:
-          "https://cdn.sanity.io/images/3do82whm/next/a69e3ba2441d35dd1a7945e826064708f30c10a9-1000x667.jpg?w=720&h=480&fit=clip&auto=format",
-        liked: true,
-      },
-      {
-        id: 3,
-        title: "The Rise of AI in Web Development",
-        description:
-          "Artificial Intelligence is revolutionizing web development. This blog delves into how AI tools are being integrated into web development processes, making it easier to build smarter, more efficient websites.",
-        likes: 1890,
-        image:
-          "https://vajiram-prod.s3.ap-south-1.amazonaws.com/What_is_Generative_AI_63beafff52.webp",
-        liked: true,
-      },
-      {
-        id: 3,
-        title: "The Rise of AI in Web Development",
-        description:
-          "Artificial Intelligence is revolutionizing web development. This blog delves into how AI tools are being integrated into web development processes, making it easier to build smarter, more efficient websites.",
-        likes: 1890,
-        image:
-          "https://vajiram-prod.s3.ap-south-1.amazonaws.com/What_is_Generative_AI_63beafff52.webp",
-        liked: true,
-      },
-    ],
-  };
   
+
+  const handlePick = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "image/*",
+      });
+
+      console.log(result);
+
+      const file = result.assets[0];
+
+      const image = {
+        name: file.name.split(".")[0],
+        uri: file.uri,
+        type: file.mimeType,
+        size: file.size,
+      };
+
+      setImage(image);
+
+      // console.log(image);
+    } catch (error) {
+      console.log("Error picking document:", error);
+      alert("An error occurred while picking the document");
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <Portal>
@@ -152,9 +59,15 @@ const Profile = () => {
           contentContainerStyle={containerStyle}
           visible={visible}
           onDismiss={() => setVisible(false)}
-          contentContainerStyle={containerStyle}
         >
-          <Form />
+          <Form
+            handlePick={handlePick}
+            setVisible={setVisible}
+            setTitle={setTitle}
+            title={title}
+            setDescription={setDescription}
+            description={description}
+          />
           {/* <Button onPress={() => setVisible(false)}>Close Modal</Button> */}
         </Modal>
       </Portal>

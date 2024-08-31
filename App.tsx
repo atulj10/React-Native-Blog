@@ -3,8 +3,9 @@ import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomNavigation, PaperProvider } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import Trending from "screens/Trending";
 import Profile from "screens/Profile";
+import Trending from "screens/trending/Trending";
+import TrendingStack from "screens/trending/stacks/TrendingStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -59,8 +60,8 @@ export default function MyComponent() {
           )}
         >
           <Tab.Screen
-            name="Trending"
-            component={Trending}
+            name="TrendingStack"
+            component={TrendingStack}
             options={{
               tabBarLabel: "Trending",
               tabBarIcon: ({ color, size }) => (
